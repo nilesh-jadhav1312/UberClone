@@ -4,7 +4,9 @@ dotenv.config();
 const express=require('express')
 const cors=require('cors')
 const app=express();
+const connectDatabase=require('./db/db')  //from db inside that from db.js
 
+connectDatabase();
 
 app.use(cors());
 app.get('/',(req,res)=>{
