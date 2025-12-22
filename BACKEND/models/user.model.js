@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    select: false,
+    select: false,       //EXCLUDE PASSWORD WHEN FETCHING USER DATA
   },
   socketId: {
     type: String,
@@ -32,10 +32,14 @@ const userSchema = new mongoose.Schema({
 });
 
 // Pre-save hook to hash password
-userSchema.pre("save", async function(next) {
-  if (!this.isModified("password")) return next();
+userSchema.pre("save", async function() {
+  // If the password hasn't changed, just exit the function (same as calling next)
+  if (!this.isModified("password")) {
+    return; 
+  }
+
   this.password = await bcrypt.hash(this.password, 10);
-  next();
+  // No next() call needed here!
 });
 
 // Instance methods
@@ -48,6 +52,11 @@ userSchema.methods.comparePassword = async function(password) {
   return await bcrypt.compare(password, this.password);
 };
 
-// Model
-const userModel = mongoose.model("User", userSchema);
+// Static method
+userSchema.statics.hashPassword = async function(password) { 
+  return await bcrypt.hash(password, 10);
+};
+
+// Model for user
+const userModel = mongoose.model("user", userSchema);
 module.exports = userModel;

@@ -1,15 +1,17 @@
+//  User Registration Route   cheking details are valid or not
+
 const express = require('express');
 const router = express.Router();
-
-const userController = require('../controllers/user.controller');
 const { body } = require('express-validator');
+const userController = require('../controllers/user.controller');  // reqire the user registration controller
+
 
 router.post(
-  '/register',
+  '/register',    //validation for user registration
   [
     body('email')
-      .isEmail()
-      .withMessage('Invalid Mail id'),
+      .isEmail()       //validate email format
+      .withMessage('Invalid Mail id'),//if not true then show the custom mesage
 
     body('fullname.firstname')
       .isLength({ min: 3 })
