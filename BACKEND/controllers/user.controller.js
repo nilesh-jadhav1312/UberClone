@@ -52,5 +52,10 @@ module.exports.loginUser=async(req,res,next)=>{
   }
 
   const token=user.generateAuthToken();  //generating token after user login too say that the user is authenticated everywhere you can use thistoken
+   res.cookie('token',token);
   res.status(200).json({token,user})
+}
+
+module.exports.getUserProfile=async(req,res,next)=>{
+  res.status(200).json(req.user);
 }

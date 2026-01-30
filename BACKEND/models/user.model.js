@@ -38,6 +38,7 @@ userSchema.pre("save", async function() {
     return; 
   }
 
+  
   this.password = await bcrypt.hash(this.password, 10);
   // No next() call needed here!
 });
